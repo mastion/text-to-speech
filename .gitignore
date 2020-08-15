@@ -272,3 +272,8 @@ Content/Library/docs/
 Content/Console/docs/
 Content/Library/.paket/paket
 Content/Console/.paket/paket
+
+*.azurekeys
+
+# Sound 
+*.wav
