@@ -10,4 +10,4 @@ dotnet tool restore
 dotnet paket restore
 $Env:tts_SubscriptionKey = $subscriptionKey
 $Env:tts_ServiceRegion = $region
-dotnet run #-r win-x86
+dotnet run -r win-x64
