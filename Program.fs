@@ -4,24 +4,23 @@ open Microsoft.Extensions.Configuration //.EnvironmentVariables
 
 [<EntryPoint>]
 let main argv =
-    async {
-        let config = ConfigurationBuilder()
-                        .AddEnvironmentVariables("TTS_")
-                        .Build()
-        printfn "---"
-        config.GetChildren() |> Seq.iter (fun x -> printfn "%s : \"%s\"" x.Key x.Value)
-        printfn "---"
-        printfn "___"
-        printfn "subkey: %s" config.["SubscriptionKey"]
-        printfn "serreg: %s" config.["ServiceRegion"]
-        printfn "___"
-        let fileName ="helloworld.wav"
-        let speechConfig = SpeechConfig.FromSubscription(config.["SubscriptionKey"], config.["ServiceRegion"])
-        
-        use fileOutput = Audio.AudioConfig.FromWavFileOutput fileName
-        use synthesizer = new SpeechSynthesizer(speechConfig, fileOutput)
+    let config = ConfigurationBuilder()
+                    .AddEnvironmentVariables("TTS_")
+                    .Build()
+    printfn "---"
+    config.GetChildren() |> Seq.iter (fun x -> printfn "%s : \"%s\"" x.Key x.Value)
+    printfn "---"
+    printfn "___"
+    printfn "subkey: %s" config.["SubscriptionKey"]
+    printfn "serreg: %s" config.["ServiceRegion"]
+    printfn "___"
+    let fileName ="helloworld.wav"
+    let speechConfig = SpeechConfig.FromSubscription(config.["SubscriptionKey"], config.["ServiceRegion"])
+    async {        
+        //use fileOutput = Audio.AudioConfig.FromWavFileOutput fileName
+        use synthesizer = new SpeechSynthesizer(speechConfig)//, fileOutput)
 
-        use! result = synthesizer.SpeakTextAsync("Hello") |> Async.AwaitTask
+        use! result = synthesizer.SpeakTextAsync("Hello. More words are better. That is splorts! Let us play blaseball! We are from chicago! Stare into the sun!") |> Async.AwaitTask
 
         match result.Reason with
         | ResultReason.SynthesizingAudioCompleted -> printfn "done"
